@@ -1,0 +1,117 @@
+﻿CREATE TABLE Category(
+	categoryID int IDENTITY(1,1) NOT NULL,
+	categoryName varchar(75) PRIMARY KEY,
+	categoryDescription varchar(MAX)
+);
+=========================================================================================
+CREATE TABLE Brands(
+	brandID int IDENTITY(1,1) PRIMARY KEY,
+	categoryName varchar(255) NOT NULL FOREIGN KEY REFERENCES Categories(categoryName),
+	brandName varchar(50) NOT NULL,
+	brandDescription varchar(MAX)
+);
+=========================================================================================
+CREATE TABLE Customer(
+	Customer_ID int IDENTITY(1,1) PRIMARY KEY,
+	Customer_Number varchar(50) UNIQUE NOT NULL,
+	Customer_Name varchar(50) NOT NULL,
+	Customer_Surname varchar(50) NOT NULL,
+	Customer_IDNumber BIGINT NOT NULL,
+	Customer_Gender varchar(25),
+	Customer_Cell BIGINT,
+	Customer_Tel BIGINT,
+	Customer_Email varchar(50),
+	Customer_Address varchar(255),
+	Customer_CreditLimit float DEFAULT'0',
+	Customer_CreditBalance float DEFAULT'0',
+	Customer_Password varchar(15) DEFAULT '" "',
+	Customer_AddedDate datetime DEFAULT (getDate()) NOT NULL,
+	
+);
+===========================================================================================
+CREATE TABLE Staff (
+	staff_ID int IDENTITY(1,1) PRIMARY KEY,
+	staff_Number varchar(15) NOT NULL UNIQUE,
+	staff_Name varchar(50) NOT NULL,
+	staff_Surname varchar(50) NOT NULL,
+	staff_IDNumber BIGINT, 
+	staff_Gender varchar(10),
+	staff_Cell int,
+	staff_Email varchar(50),
+	staff_Type varchar(25),
+	staff_EmployedDate date DEFAULT(getDate()),
+	staff_LastLogin datetime,
+	staff_Salay money DEFAULT(0.0),
+	staff_Wage money DEFAULT(0.0),
+	staff_Username varchar(20),
+	staff_Password varchar(20),
+	staff_Remarks text
+	
+);
+===========================================================================================
+CREATE TABLE Orders(
+	Order_Number varchar(50) PRIMARY KEY NOT NULL,
+	Customer_Number varchar(50) FOREIGN KEY REFERENCES Customer(Customer_Number) NOT NULL,
+	staff_Number varchar(15) FOREIGN KEY REFERENCES Staff(staff_Number) NOT NULL,
+	OrderAmount float NOT NULL,
+	OrderQuantity int NOT NULL,
+	OrderStatus varchar(50) NOT NULL,
+	OrderDate datetime DEFAULT(getDate()) NOT NULL
+
+);
+===============================================================================================
+CREATE TABLE OrderItem (
+	Order_Number varchar(50) NOT NULL,
+	pName varchar(255) NOT NULL,
+	pCode varchar(255) NOT NULL,
+	pSellingPrice float NOT NULL,
+	pQuantity int NOT NULL,
+	pTotalAmount float NOT NULL,
+
+);
+============================================================================================
+CREATE TABLE OrderItem (
+	Order_Number varchar(50) NOT NULL,
+	pName varchar(255) NOT NULL,
+	pCode varchar(255) NOT NULL,
+	pSellingPrice float NOT NULL,
+	pQuantity int NOT NULL,
+	pTotalAmount float NOT NULL,
+	);
+============================================================================================
+
+============================================================================================
+CREATE TABLE Product(
+	pID int IDENTITY(1,1) PRIMARY KEY,
+	categoryName varchar(75) NOT NULL  FOREIGN KEY REFERENCES Category(categoryName),
+	brandID int NOT NULL FOREIGN KEY REFERENCES Brand(brandID),
+	pCode varchar(255) NOT NULL,
+	pName varchar(255) NOT NULL,
+	pCostPrice float NOT NULL DEFAULT(0.0),
+	pSellingPrice float NOT NULL DEFAULT(0.0),
+	pReorderQty int DEFAULT(0),
+	pQty int DEFAULT(0),
+	pDescription varchar(max)
+	);
+=============================================================================================
+Create Table loginLog(
+loginID int Primary Key Identity(1,1),
+	  staff_Number varchar(50) NOT NULL,
+      staff_Name varchar(50),
+      loginStart datetime DEFAULT (getDate()) NOT NULL,
+      loginEnd datetime DEFAULT (getDate()) NOT NULL, 
+
+);
+=============================================================================================
+CREATE TABLE Payment (
+	pID int PRIMARY KEY IDENTITY(1,1),
+	Order_Number varchar(50) FOREIGN KEY REFERENCES Orders(Order_Number) NOT NULL,	
+	Customer_Number varchar(50) FOREIGN KEY REFERENCES Customer(Customer_Number) NOT NULL,
+	staff_Number varchar(15) NOT NULL,
+	OrderAmount decimal(10,2) NOT NULL,
+	OrderQuantity int NOT NULL,
+	pAmount decimal(10,2) NOT NULL,
+	pChange decimal(10,2) DEFAULT('0.00') NOT NULL,
+	pDate datetime DEFAULT(getDate()) NOT NULL,
+	pType varchar(50) NOT NULL
+);
